@@ -1,0 +1,29 @@
+<div [class]="isXSmall ? 'mobile-side-nave-wrap' : 'app-side-nave-wrap'">
+  <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+    <ng-container *ngFor="let item of menuSrv.menus">
+      <li *ngIf="item?.group" nz-menu-group [nzTitle]="item.i18n! | i18n"></li>
+      <ng-container *ngFor="let child of item?.children"
+        [ngTemplateOutlet]="child?.children?.length ? submenu : menuItem" [ngTemplateOutletContext]="{ item: child }">
+      </ng-container>
+    </ng-container>
+
+    <ng-template #menuItem let-item="item">
+      <li nz-menu-item nzMatchRouter>
+        <a [routerLink]="item?.link">
+          <i nz-icon [nzType]="item?.icon.value"></i>
+          <span>{{ item?.i18n | i18n }}</span>
+        </a>
+      </li>
+    </ng-template>
+
+    <ng-template #submenu let-item="item">
+      <li nz-submenu [nzTitle]="item?.i18n | i18n" [nzIcon]="item?.icon.value">
+        <ul>
+          <li *ngFor="let child of item?.children" nz-menu-item nzMatchRouter>
+            <a [routerLink]="child?.link">{{ child?.i18n | i18n }}</a>
+          </li>
+        </ul>
+      </li>
+    </ng-template>
+  </ul>
+</div>
